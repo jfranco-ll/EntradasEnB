@@ -3,456 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PartyPass - Discoteca Mii 🪩</title>
+  <title>🎄 FIESTA DEL 24 - Pista de Baile 🪩</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root {
-      --pitch-angle: 34deg;
-      --counter-pitch: -34deg;
-    }
-
-    body {
-      background: #090611;
-      overflow: hidden;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      user-select: none;
-    }
-
-    /* CONTENEDOR PRINCIPAL 3D */
-    .viewport-3d {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      perspective: 1200px;
-      position: relative;
-      padding-bottom: 30px;
-    }
-
-    /* ESCENARIO DEL CLUB EN PERSPECTIVA PICADA ELEVADA */
-    .club-room {
-      width: 1100px;
-      height: 740px;
-      position: relative;
-      transform: rotateX(var(--pitch-angle));
-      transform-style: preserve-3d;
-      background: radial-gradient(ellipse at center, #1b122c 0%, #0c0817 75%, #05030a 100%);
-      border-radius: 32px;
-      border: 3px solid rgba(139, 92, 246, 0.25);
-      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
-    }
-
-    /* ==========================================
-       1. ILUSTRACIONES DEL ENTORNO (BACKGROUND)
-       ========================================== */
-
-    /* CARTEL NEÓN PRINCIPAL DEL CLUB */
-    .club-neon-sign {
-      position: absolute;
-      top: 15px;
-      left: 50%;
-      transform: translateX(-50%) rotateX(var(--counter-pitch));
-      z-index: 10;
-      background: rgba(15, 10, 28, 0.85);
-      border: 2px solid #a855f7;
-      padding: 6px 28px;
-      border-radius: 9999px;
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-      text-align: center;
-    }
-
-    /* CABINA DE DJ ILUSTRADA (CENTRO FONDO) */
-    .dj-station {
-      position: absolute;
-      top: 65px;
-      left: 50%;
-      transform: translateX(-50%) rotateX(var(--counter-pitch));
-      transform-origin: bottom center;
-      z-index: 8;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .dj-character {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: djBounce 0.8s infinite alternate ease-in-out;
-      margin-bottom: -10px;
-    }
-
-    @keyframes djBounce {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-8px); }
-    }
-
-    /* BARRA DE BAR DIBUJADA (DERECHA) */
-    .bar-zone {
-      position: absolute;
-      right: 35px;
-      top: 130px;
-      transform: rotateX(var(--counter-pitch));
-      transform-origin: bottom center;
-      z-index: 9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .bartender-mii {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: -12px;
-      animation: bartenderAction 3s infinite alternate ease-in-out;
-    }
-
-    @keyframes bartenderAction {
-      0% { transform: translateX(-10px) rotate(-2deg); }
-      100% { transform: translateX(10px) rotate(2deg); }
-    }
-
-    /* ZONA DE BAÑOS ILUSTRADA (IZQUIERDA) */
-    .restroom-zone {
-      position: absolute;
-      left: 35px;
-      top: 130px;
-      transform: rotateX(var(--counter-pitch));
-      transform-origin: bottom center;
-      z-index: 9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* BOLA DE DISCO SUTIL */
-    .disco-ball-wrapper {
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%) rotateX(var(--counter-pitch));
-      z-index: 25;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .disco-ball {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #ffffff, #94a3b8 60%, #475569 100%);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-      animation: spinBall 6s linear infinite;
-    }
-
-    @keyframes spinBall {
-      0% { filter: hue-rotate(0deg); }
-      100% { filter: hue-rotate(360deg); }
-    }
-
-    /* ==========================================
-       2. PISTA DE BAILE POSICIONADA MÁS ABAJO
-       Y MÁXIMAMENTE AGRADABLE A LA VISTA (MATTE)
-       ========================================== */
-    .disco-floor {
-      width: 700px;
-      height: 380px;
-      position: absolute;
-      bottom: 45px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #0d0818;
-      border: 10px solid #1a122e;
-      border-radius: 18px;
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: repeat(8, 1fr);
-      gap: 5px;
-      padding: 8px;
-      box-shadow: 
-        0 15px 40px rgba(0, 0, 0, 0.8),
-        inset 0 0 20px rgba(0, 0, 0, 0.9);
-    }
-
-    /* AZULEJOS MATES Y AGRADABLES */
-    .tile {
-      border-radius: 4px;
-      opacity: 0.85;
-      transition: background-color 1.5s ease-in-out;
-      animation: softPulse 4s infinite alternate ease-in-out;
-    }
-
-    @keyframes softPulse {
-      0% { opacity: 0.75; }
-      100% { opacity: 0.95; }
-    }
-
-    /* ==========================================
-       3. AVATARES DE PERSONAJES MII
-       ========================================== */
+    /* Estilos para los personajes Mii en 2D */
     .mii-character {
       position: absolute;
-      transition: left 3.8s cubic-bezier(0.25, 1, 0.5, 1), top 3.8s cubic-bezier(0.25, 1, 0.5, 1);
-      transform: rotateX(var(--counter-pitch)) translateY(-50%);
-      transform-origin: bottom center;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      transition: all 0.5s ease-out;
       cursor: pointer;
-      z-index: 15;
-      pointer-events: auto;
+      z-index: 20;
+      transform: translate(-50%, -50%);
     }
-
-    .mii-character:hover {
-      z-index: 100 !important;
-    }
-
-    .mii-avatar-container {
-      position: relative;
-      animation: miiBounce 1.3s infinite alternate ease-in-out;
-    }
-
-    @keyframes miiBounce {
-      0% { transform: translateY(0) scale(1, 1); }
-      100% { transform: translateY(-12px) scale(0.95, 1.05); }
-    }
-
-    .mii-avatar-img {
-      width: 52px;
-      height: 52px;
-      object-fit: cover;
-      border-radius: 50%;
-      background: #1e1b4b;
-      border: 3px solid #a855f7;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-      transition: transform 0.2s, border-color 0.2s;
-    }
-
-    .mii-character:hover .mii-avatar-img {
-      transform: scale(1.18);
-      border-color: #38bdf8;
-    }
-
-    .mii-shadow {
-      width: 36px;
-      height: 8px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 50%;
-      margin-top: -5px;
-      filter: blur(2px);
-    }
-
     .mii-nametag {
-      background: rgba(15, 23, 42, 0.9);
-      color: #f1f5f9;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-weight: 700;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(236, 72, 153, 0.6);
+      color: #fff;
       font-size: 11px;
-      border: 1.5px solid #a855f7;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
       white-space: nowrap;
-      margin-bottom: 4px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
+      margin-bottom: 3px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .mii-avatar-container {
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      background: #1e293b;
+      border: 2px solid #ec4899;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
+    }
+    .mii-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Animación de baile suave 2D */
+    @keyframes miiDance2D {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0) scale(1); }
+      50% { transform: translate(-50%, -50%) translateY(-6px) scale(1.05); }
+    }
+    .mii-dancing {
+      animation: miiDance2D 1.2s infinite ease-in-out;
     }
   </style>
 </head>
-<body class="w-screen h-screen relative select-none">
+<body class="bg-slate-950 text-white min-h-screen flex flex-col items-center justify-between p-4 relative select-none">
 
-  <!-- CABECERA DE LA FIESTA -->
-  <div class="absolute top-4 left-1/2 -translate-x-1/2 text-center z-50 pointer-events-none">
-    <h1 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-300 to-cyan-400 drop-shadow-[0_5px_15px_rgba(236,72,153,0.4)] tracking-wider uppercase mb-1">
+  <!-- CABECERA -->
+  <header class="w-full max-w-xl text-center pt-2 pb-4 z-30">
+    <h1 class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-300 to-cyan-400 tracking-wider uppercase mb-2">
       🎄 FIESTA DEL 24 🎄
     </h1>
-    <div class="inline-flex items-center space-x-3 bg-slate-900/80 border border-pink-500/30 backdrop-blur-md px-5 py-1.5 rounded-full shadow-2xl">
+    <div class="inline-flex items-center space-x-2 bg-slate-900/90 border border-pink-500/30 px-4 py-1.5 rounded-full shadow-lg">
       <span class="w-2.5 h-2.5 bg-green-400 rounded-full animate-ping"></span>
-      <p class="text-pink-200 text-xs md:text-sm font-semibold tracking-wide">
-        <span id="active-count" class="text-white text-base font-bold">0</span> Asistentes
+      <p class="text-pink-200 text-xs sm:text-sm font-semibold">
+        <span id="active-count" class="text-white font-bold">0</span> Personajes en Pista
       </p>
-      <span class="text-slate-600">|</span>
-      <p class="text-slate-300 text-xs">Haz clic en una persona para ver su Instagram</p>
     </div>
-  </div>
+    <p class="text-slate-400 text-xs mt-1">Toca un avatar para ver su Instagram</p>
+  </header>
 
-  <!-- VISTA CENITAL / PICADA DE LA DISCOTECA -->
-  <div class="viewport-3d">
-    <div class="club-room">
+  <!-- PISTA DE BAILE 2D RESPONSIVA (Sin rotaciones raras) -->
+  <main class="w-full max-w-2xl flex-1 flex items-center justify-center my-2">
+    <div id="dancefloor-container" class="relative w-full h-[420px] sm:h-[500px] bg-slate-900 border-4 border-purple-500/50 rounded-3xl p-4 shadow-[0_0_40px_rgba(168,85,247,0.25)] overflow-hidden">
+      
+      <!-- Cuadrícula de suelo de discoteca -->
+      <div id="grid-bg" class="absolute inset-0 grid grid-cols-6 sm:grid-cols-8 grid-rows-6 gap-2 p-3 opacity-30 pointer-events-none"></div>
 
-      <!-- BOLA DE DISCO ELEVADA -->
-      <div class="disco-ball-wrapper">
-        <div class="w-0.5 h-10 bg-slate-500"></div>
-        <div class="disco-ball"></div>
-      </div>
-
-      <!-- TÍTULO NEÓN DIBUJADO -->
-      <div class="club-neon-sign">
-        <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-cyan-300 tracking-widest">
-          PARTY PASS CLUB 🪩
-        </h1>
-      </div>
-
-      <!-- 1. ZONA DE BAÑOS ILUSTRADA (IZQUIERDA) -->
-      <div class="restroom-zone">
-        <!-- RÓTULO LUMINOSO -->
-        <div class="bg-indigo-950 border border-cyan-400/50 px-3 py-1 rounded-md text-[10px] font-black text-cyan-300 tracking-wider mb-2 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-          RESTROOMS / BAÑOS
-        </div>
-        <div class="flex space-x-3">
-          <!-- PUERTA MUJERES -->
-          <div class="w-16 h-28 bg-gradient-to-b from-indigo-900 to-slate-950 border-2 border-pink-500/60 rounded-t-lg flex flex-col items-center justify-start pt-3 relative shadow-lg">
-            <svg class="w-7 h-7 fill-pink-400 mb-1" viewBox="0 0 24 24"><path d="M12 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm3 9h-2v8h-2v-8H9l1.5-4.5A2 2 0 0 1 12.4 7h.2a2 2 0 0 1 1.9 1.5L16 11z"/></svg>
-            <span class="text-[9px] font-bold text-pink-300">MUJERES</span>
-            <div class="absolute right-1.5 top-14 w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
-          </div>
-          <!-- PUERTA HOMBRES -->
-          <div class="w-16 h-28 bg-gradient-to-b from-indigo-900 to-slate-950 border-2 border-cyan-500/60 rounded-t-lg flex flex-col items-center justify-start pt-3 relative shadow-lg">
-            <svg class="w-7 h-7 fill-cyan-400 mb-1" viewBox="0 0 24 24"><path d="M12 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm2 7h-4a2 2 0 0 0-2 2v4h2v6h4v-6h2v-4a2 2 0 0 0-2-2z"/></svg>
-            <span class="text-[9px] font-bold text-cyan-300">HOMBRES</span>
-            <div class="absolute right-1.5 top-14 w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. CABINA DE DJ ILUSTRADA (CENTRO TRASERO) -->
-      <div class="dj-station">
-        <!-- DJ MII -->
-        <div class="dj-character">
-          <div class="relative">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=MiiDJPro" class="w-12 h-12 rounded-full bg-purple-950 border-2 border-pink-400 shadow-md">
-            <!-- Auriculares -->
-            <div class="absolute -top-1 -left-1 -right-1 h-4 border-t-4 border-slate-300 rounded-t-full"></div>
-          </div>
-          <span class="text-[9px] font-black text-purple-300 bg-slate-900 px-2 py-0.5 rounded-full border border-purple-500/40 mt-1">DJ MII</span>
-        </div>
-
-        <!-- MESA DE MEZCLAS Y TURNTABLES DIBUJADOS -->
-        <div class="w-48 h-16 bg-slate-900 border-2 border-purple-500 rounded-t-xl p-2 flex items-center justify-between shadow-[0_0_15px_rgba(168,85,247,0.3)]">
-          <!-- VINILO 1 -->
-          <div class="w-10 h-10 bg-slate-950 rounded-full border-2 border-slate-700 flex items-center justify-center animate-spin" style="animation-duration: 3s;">
-            <div class="w-3 h-3 bg-pink-500 rounded-full"></div>
-          </div>
-          <!-- CONTROLES Y MEZCLADOR -->
-          <div class="flex flex-col items-center space-y-1">
-            <div class="flex space-x-1">
-              <div class="w-1.5 h-3 bg-cyan-400 rounded-xs"></div>
-              <div class="w-1.5 h-4 bg-emerald-400 rounded-xs"></div>
-              <div class="w-1.5 h-2 bg-pink-500 rounded-xs"></div>
-            </div>
-            <div class="w-8 h-1 bg-slate-700 rounded-full"></div>
-          </div>
-          <!-- VINILO 2 -->
-          <div class="w-10 h-10 bg-slate-950 rounded-full border-2 border-slate-700 flex items-center justify-center animate-spin" style="animation-duration: 3s;">
-            <div class="w-3 h-3 bg-cyan-400 rounded-full"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. BARRA DE BAR DIBUJADA (DERECHA) -->
-      <div class="bar-zone">
-        <!-- CAMARERO MII -->
-        <div class="bartender-mii">
-          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=BartenderMii" class="w-11 h-11 rounded-full bg-slate-900 border-2 border-amber-400 shadow-md">
-          <span class="text-[9px] font-bold text-amber-300 bg-slate-950 px-2 py-0.5 rounded-full border border-amber-400/50 mt-0.5">Camarero</span>
-        </div>
-
-        <!-- ESTANTERÍA DE BOTELLAS DIBUJADA -->
-        <div class="bg-slate-950 border border-amber-500/40 rounded-t-md px-3 py-1 flex space-x-2 text-sm mb-1">
-          <span>🍾</span><span>🍹</span><span>🍸</span><span>🍷</span>
-        </div>
-
-        <!-- MOSTRADOR CON TABURETES DIBUJADOS -->
-        <div class="relative">
-          <div class="w-52 h-12 bg-gradient-to-b from-amber-950 to-slate-900 border-2 border-amber-600 rounded-lg flex items-center justify-around px-2 shadow-xl">
-            <span class="text-xs">🍸</span>
-            <span class="text-xs">🍺</span>
-            <span class="text-xs">🍹</span>
-            <span class="text-xs">🍷</span>
-          </div>
-          <!-- TABURETES DE BAR -->
-          <div class="flex justify-around px-4 -mt-1">
-            <div class="w-5 h-5 bg-amber-800 rounded-full border border-amber-500"></div>
-            <div class="w-5 h-5 bg-amber-800 rounded-full border border-amber-500"></div>
-            <div class="w-5 h-5 bg-amber-800 rounded-full border border-amber-500"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4. PISTA DE BAILE DE COLORES MATES (ABAJO) -->
-      <div id="disco-grid" class="disco-floor">
-        <div id="mii-layer" class="absolute inset-0 pointer-events-none"></div>
-      </div>
-
+      <!-- Capa de avatares -->
+      <div id="mii-layer" class="absolute inset-0 pointer-events-auto"></div>
     </div>
-  </div>
+  </main>
 
-  <!-- MODAL DE DETALLE DE ASISTENTE (INSTAGRAM) -->
-  <div id="guest-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border-2 border-purple-500 rounded-3xl p-6 max-w-sm w-full text-center shadow-[0_0_40px_rgba(168,85,247,0.3)] relative">
-      <button onclick="closeModal()" class="absolute top-3 right-4 text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
-      
-      <div class="relative w-28 h-28 mx-auto mb-4">
-        <img id="modal-avatar" src="" class="w-28 h-28 object-cover rounded-full bg-slate-800 border-4 border-purple-500 shadow-xl">
-        <div class="absolute bottom-0 right-0 bg-gradient-to-tr from-yellow-500 via-red-500 to-purple-600 p-1.5 rounded-full border-2 border-slate-900">
-          <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </div>
-      </div>
+  <!-- BOTÓN VOLVER -->
+  <footer class="w-full max-w-xl text-center py-2 z-30">
+    <a href="/" class="inline-block bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 px-5 py-2 rounded-full border border-slate-600 shadow-md transition-colors">
+      &larr; Volver al Portal Principal
+    </a>
+  </footer>
 
-      <h3 id="modal-name" class="text-2xl font-black text-white mb-1"></h3>
-      <p id="modal-ig-handle" class="text-purple-400 font-semibold text-sm mb-4"></p>
+  <!-- MODAL DE DETALLES -->
+  <div id="guest-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border-2 border-pink-500/50 rounded-3xl p-6 max-w-xs w-full text-center relative shadow-2xl">
+      <button onclick="closeGuestModal()" class="absolute top-3 right-4 text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
       
-      <div id="modal-ig-container">
-        <a id="modal-ig-link" href="#" target="_blank" class="w-full inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-600 via-pink-600 to-rose-500 hover:from-purple-500 hover:to-rose-400 text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all transform hover:scale-105 active:scale-95">
-          <span>Abrir Perfil de Instagram</span>
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
-        </a>
+      <div class="w-20 h-20 rounded-full border-4 border-pink-500 mx-auto mb-3 overflow-hidden shadow-lg">
+        <img id="modal-img" src="" alt="Avatar" class="w-full h-full object-cover">
       </div>
+      
+      <h3 id="modal-name" class="text-xl font-black text-white mb-1"></h3>
+      <p id="modal-ig" class="text-pink-400 font-semibold text-xs mb-5"></p>
+
+      <a id="modal-ig-link" href="#" target="_blank" class="block w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-2.5 rounded-xl shadow-md text-xs hover:opacity-90">
+        Ver Perfil de Instagram &rarr;
+      </a>
     </div>
   </div>
 
   <script>
-    const grid = document.getElementById('disco-grid');
     const miiLayer = document.getElementById('mii-layer');
-    const activeCount = document.getElementById('active-count');
-    let charactersMap = new Map();
+    const gridBg = document.getElementById('grid-bg');
+    const activeCountEl = document.getElementById('active-count');
+    const charactersMap = new Map();
 
-    // GENERAR PALETA MATE Y SUAVE PARA EL SUELO
-    const softMatteColors = [
-      '#1e1b4b', // Indigo oscuro
-      '#2e1065', // Púrpura profundo
-      '#1e293b', // Azul pizarra
-      '#311b92', // Azul violeta tenue
-      '#3b0764', // Magenta oscuro mate
-      '#0f172a'  //Oscuro mate
-    ];
-
-    for (let i = 0; i < 96; i++) {
+    // Generar baldosas de suelo
+    for (let i = 0; i < 48; i++) {
       const tile = document.createElement('div');
-      tile.className = 'tile';
-      tile.style.backgroundColor = softMatteColors[Math.floor(Math.random() * softMatteColors.length)];
-      tile.style.animationDelay = `${(Math.random() * 3).toFixed(1)}s`;
-      grid.appendChild(tile);
+      const colors = ['bg-pink-500/20', 'bg-purple-500/20', 'bg-cyan-500/20', 'bg-indigo-500/20'];
+      tile.className = `rounded-lg ${colors[Math.floor(Math.random() * colors.length)]} transition-colors duration-1000`;
+      gridBg.appendChild(tile);
     }
 
-    // SINCRONIZACIÓN REAL CON BACKEND SUPABASE
+    // Luces parpadeantes
+    setInterval(() => {
+      const tiles = gridBg.children;
+      for (let i = 0; i < 6; i++) {
+        const randomTile = tiles[Math.floor(Math.random() * tiles.length)];
+        const colors = ['bg-pink-500/40', 'bg-purple-500/40', 'bg-cyan-500/40', 'bg-indigo-500/40'];
+        randomTile.className = `rounded-lg ${colors[Math.floor(Math.random() * colors.length)]} transition-colors duration-500`;
+      }
+    }, 800);
+
     async function fetchDancefloorGuests() {
       try {
         const response = await fetch('/api/guests/dancefloor');
         const data = await response.json();
 
         if (data.success) {
-          updateDancefloor(data.guests);
+          activeCountEl.innerText = data.guests.length;
+          renderGuests(data.guests);
         }
       } catch (err) {
-        console.error('Error sincronizando la pista:', err);
+        console.error('Error al cargar la pista:', err);
       }
     }
 
-    function updateDancefloor(guests) {
-      activeCount.innerText = guests.length;
-
+    function renderGuests(guests) {
       guests.forEach(guest => {
         if (!charactersMap.has(guest.id)) {
           createMiiCharacter(guest);
@@ -461,77 +155,57 @@
     }
 
     function createMiiCharacter(guest) {
-  const char = document.createElement('div');
-  char.className = 'mii-character';
-  char.id = `mii-${guest.id}`;
+      const char = document.createElement('div');
+      char.className = 'mii-character mii-dancing';
+      char.id = `mii-${guest.id}`;
 
-  // Posicionamiento en el marco de la pista
-  const randomX = Math.random() * 82 + 9;
-  const randomY = Math.random() * 76 + 12;
+      // Posicionamiento seguro dentro del recuadro
+      const randomX = Math.random() * 80 + 10;
+      const randomY = Math.random() * 75 + 12;
 
-  char.style.left = `${randomX}%`;
-  char.style.top = `${randomY}%`;
+      char.style.left = `${randomX}%`;
+      char.style.top = `${randomY}%`;
 
-  const displayTag = guest.instagram ? `${guest.instagram}` : guest.name;
-  const cleanIg = guest.instagram ? guest.instagram.replace('@', '').trim() : guest.name;
+      const displayTag = guest.instagram ? `${guest.instagram}` : guest.name;
+      const cleanIg = guest.instagram ? guest.instagram.replace('@', '').trim() : guest.name;
 
-  // Suuraa profiloota Instagram deeggaruufi avatar Mii/Lorelei baayyee bareeda ta'e uumuuf
-  const profilePicUrl = `https://api.dicebear.com/7.x/lorelei/svg?seed=${encodeURIComponent(cleanIg)}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+      const profilePicUrl = `https://api.dicebear.com/7.x/lorelei/svg?seed=${encodeURIComponent(cleanIg)}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
 
-  char.innerHTML = `
-    <div class="mii-nametag">${displayTag}</div>
-    <div class="mii-avatar-container">
-      <img src="${profilePicUrl}" alt="${guest.name}" onerror="this.src='${guest.avatar_url}'" class="mii-avatar-img">
-    </div>
-    <div class="mii-shadow"></div>
-  `;
+      char.innerHTML = `
+        <div class="mii-nametag">${displayTag}</div>
+        <div class="mii-avatar-container">
+          <img src="${profilePicUrl}" alt="${guest.name}" class="mii-avatar-img">
+        </div>
+      `;
 
-  char.addEventListener('click', () => showGuestModal(guest, profilePicUrl));
+      char.addEventListener('click', () => showGuestModal(guest, profilePicUrl));
 
-  miiLayer.appendChild(char);
-  charactersMap.set(guest.id, char);
-
-  startMiiDancing(char);
-}
-
-    function startMiiDancing(element) {
-      setInterval(() => {
-        const newX = Math.random() * 82 + 9;
-        const newY = Math.random() * 76 + 12;
-        element.style.left = `${newX}%`;
-        element.style.top = `${newY}%`;
-      }, Math.random() * 3500 + 4000);
+      miiLayer.appendChild(char);
+      charactersMap.set(guest.id, char);
     }
 
-    function showGuestModal(guest, profilePicUrl) {
-      const cleanIg = guest.instagram ? guest.instagram.replace('@', '').trim() : '';
-      
-      document.getElementById('modal-avatar').src = profilePicUrl;
+    function showGuestModal(guest, avatarUrl) {
+      document.getElementById('modal-img').src = avatarUrl;
       document.getElementById('modal-name').innerText = guest.name;
+      const ig = guest.instagram || '@sin_instagram';
+      document.getElementById('modal-ig').innerText = ig;
+      
+      const cleanIg = ig.replace('@', '').trim();
+      document.getElementById('modal-ig-link').href = `https://instagram.com/${cleanIg}`;
 
-      const igContainer = document.getElementById('modal-ig-container');
-      const igHandle = document.getElementById('modal-ig-handle');
-      const igLink = document.getElementById('modal-ig-link');
-
-      if (cleanIg) {
-        igHandle.innerText = `@${cleanIg}`;
-        igLink.href = `https://instagram.com/${cleanIg}`;
-        igContainer.classList.remove('hidden');
-      } else {
-        igHandle.innerText = 'Sin perfil de Instagram público';
-        igContainer.classList.add('hidden');
-      }
-
-      document.getElementById('guest-modal').classList.remove('hidden');
+      const modal = document.getElementById('guest-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
     }
 
-    function closeModal() {
-      document.getElementById('guest-modal').classList.add('hidden');
+    function closeGuestModal() {
+      const modal = document.getElementById('guest-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
     }
 
-    // Inicializar y actualizar cada 3 segundos sin simulación
     fetchDancefloorGuests();
-    setInterval(fetchDancefloorGuests, 3000);
+    setInterval(fetchDancefloorGuests, 5000);
   </script>
 </body>
 </html>
