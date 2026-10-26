@@ -21,11 +21,9 @@ const supabase = createClient(
   process.env.SUPABASE_KEY
 );
 
-// Configurar Nodemailer para envío de correos
+// Configurar Nodemailer para envío de correos con Gmail
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: false, // true para 465, false para otros puertos
+  service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -134,7 +132,7 @@ app.post('/api/guests', async (req, res) => {
 
     // 4. Enviar correo electrónico con la entrada adjunta
     const mailOptions = {
-      from: process.env.EMAIL_FROM,
+      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
       to: email,
       subject: '🎟️ ¡Tu entrada para la Fiesta Privada!',
       html: `
@@ -245,19 +243,15 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Servidor conectado a Supabase funcionando' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-});
-
 // ==========================================
-// ENDPOINT: Obtener asistentes para la pista de baile (Corregido)
+// ENDPOINT 5: Obtener asistentes para la pista de baile
 // ==========================================
 app.get('/api/guests/dancefloor', async (req, res) => {
   try {
     const { data: guests, error } = await supabase
       .from('guests')
       .select('id, name, instagram, avatar_url, ticket_status')
-      .order('id', { ascending: false }); // Ordenamos por ID para evitar el error de created_at
+      .order('id', { ascending: false });
 
     if (error) {
       console.error('❌ Error Supabase:', error.message);
@@ -269,4 +263,8 @@ app.get('/api/guests/dancefloor', async (req, res) => {
     console.error('❌ Error servidor:', err);
     res.status(500).json({ success: false, error: 'Error al cargar la pista de baile' });
   }
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
